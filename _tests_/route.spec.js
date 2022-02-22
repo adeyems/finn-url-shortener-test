@@ -9,7 +9,18 @@ const request = () => supertest_1.default(app_1.default);
 describe('the test for validating routes', () => {
     it('should return 200', async (done) => {
         request()
-            .get('/foo/quantity')
+            .get('/api/v1/encode')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end((err, res) => {
+            if (err)
+                return done(err);
+            done();
+        });
+    });
+    it('should return 200', async (done) => {
+        request()
+            .get('/api/v1/decode')
             .expect('Content-Type', /json/)
             .expect(200)
             .end((err, res) => {
