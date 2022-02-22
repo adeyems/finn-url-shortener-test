@@ -4,24 +4,24 @@ import app from "../src/app";
 const request = () => server(app)
 
 
-describe('the test for validating routes', () => {
-    it('should return 200', async done => {
+describe('the tests for validating routes', () => {
+    it('should return HTTP response code of 201', async done => {
         request()
-            .get('/api/v1/encode')
+            .post('/api/v1/encode')
             .expect('Content-Type', /json/)
-            .expect(200)
-            .end((err, res) => {
+            .expect(201)
+            .end((err) => {
                 if (err) return done(err)
                 done()
             })
     })
 
-    it('should return 200', async done => {
+    it('should return HTTP response code of 200', async done => {
         request()
             .get('/api/v1/decode')
             .expect('Content-Type', /json/)
             .expect(200)
-            .end((err, res) => {
+            .end((err) => {
                 if (err) return done(err)
                 done()
             })
