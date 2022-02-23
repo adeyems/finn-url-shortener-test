@@ -8,3 +8,13 @@ services:
       - "8080:8080"
     volumes:
       - ./:/usr/app/src
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - cache:/data
+volumes:
+  cache:
+    driver: local
