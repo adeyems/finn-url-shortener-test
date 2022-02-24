@@ -32,7 +32,17 @@ class URLControllers {
     }
 
     decode = async (req: Request, res: Response) => {
+        try {
+            const decodedURL = await this.urlRepository.getFromCache(req.body.path);
+            if (!decodedURL)
+                return errorResponse(res, responseCode.NOT_FOUND, 'URL not found')
 
+            return successResponse(res, responseCode.SUCCESS, 'Decoded URL', {url: decodedURL})
+
+        }
+        catch (error){
+            return errorResponse(res, responseCode.INTERNAL_SERVER_ERROR, 'An error occurred')
+        }
     }
 }
 

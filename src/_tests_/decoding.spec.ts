@@ -1,5 +1,5 @@
 import server from 'supertest'
-import app from "../src/app";
+import app from "../app";
 
 const request = () => server(app)
 
@@ -13,7 +13,22 @@ describe('the tests for testing decoding endpoint functionalities', () => {
 
             .end((err, res) => {
                 if (err) return done(err)
-                expect(res.body).toMatchObject({status: "error", message: "URL is required"})
+                expect(res.body).toMatchObject({status: "error", message: "Path is required"})
+                done()
+            })
+    })
+
+
+    it('should return a 422 Unprocessable Entity Response Code if path key length is not equals to six', async done => {
+        request()
+            .post('/api/v1/decode')
+            .send({path: '3A456gww'})
+            .expect('Content-Type', /json/)
+            .expect(422)
+
+            .end((err, res) => {
+                if (err) return done(err)
+                expect(res.body).toMatchObject({status: "error", message: "Invalid URL"})
                 done()
             })
     })
@@ -48,7 +63,7 @@ describe('the tests for testing decoding endpoint functionalities', () => {
     it('should return a 404 not found response when a random URL is sent', async () => {
         let res = await request()
             .post('/api/v1/decode')
-            .send({path: '45ff5554'})
+            .send({path: '99999+'})
             .expect('Content-Type', /json/)
 
         expect(res.status).toEqual(404)

@@ -1,11 +1,11 @@
-import { createClient } from 'redis';
+import {createClient} from 'redis';
 
 class CacheService {
     private client: any;
 
     constructor() {
         const run = (async () => {
-            this.client = createClient();
+            this.client = createClient( {url: 'redis://redis-server:6379'});
             this.client.on('error', (err: any) => console.log('Redis Client Error', err));
 
             await this.client.connect();

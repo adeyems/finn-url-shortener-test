@@ -1,5 +1,5 @@
 import server from 'supertest'
-import app from "../src/app";
+import app from "../app";
 
 const request = () => server(app)
 
