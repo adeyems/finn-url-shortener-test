@@ -40,7 +40,7 @@ describe('the tests for testing api full functionalities', () => {
             .end((err, res) => {
                 if (err) return done(err)
                 expect(res.body).toMatchObject({status: "success", message: "Encoded URL"})
-                expect(res.body).toHaveProperty("data", expect.stringMatching(/http:\/\/localhost/))
+                expect(res.body.data).toHaveProperty("url", expect.stringMatching(/https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))/))
                 done()
             })
     })
