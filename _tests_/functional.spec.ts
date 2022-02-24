@@ -79,6 +79,41 @@ describe('the tests for testing api full functionalities', () => {
                 done()
             })
     })
+
+    it('should return a 201 created response and different encoded shortened URLs using different urls', async done => {
+        let url = "https://google.com", url1 = "https://facebook.com",  encodedURL = '';
+        request()
+            .post('/api/v1/encode')
+            .send({url})
+            .expect('Content-Type', /json/)
+            .expect(201)
+            .end((err, res) => {
+                if (err) return done(err)
+                expect(res.body).toMatchObject({status: "success", message: "Encoded URL"})
+                expect(res.body.data).toHaveProperty("url", expect.stringMatching(/https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))/))
+
+                encodedURL = res.body.data.url.split('/')[3]
+
+                expect(encodedURL.length).toEqual(6)
+
+                done()
+            })
+
+        request()
+            .post('/api/v1/encode')
+            .send({url: url1})
+            .expect('Content-Type', /json/)
+            .expect(201)
+            .end((err, res) => {
+                if (err) return done(err)
+                expect(res.body).toMatchObject({status: "success", message: "Encoded URL"})
+                expect(res.body.data).toHaveProperty("url", expect.stringMatching(/https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))/))
+
+                expect(res.body.data.url.split('/')[3]).not.toEqual(encodedURL);
+
+                done()
+            })
+    })
 });
 
 
