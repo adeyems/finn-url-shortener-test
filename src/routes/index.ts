@@ -1,4 +1,4 @@
-import express, {Request, Response} from "express";
+import express from "express";
 import URLControllers from "../controllers/URLControllers";
 import URLRepository from "../repositories/URLRepository";
 import CacheService from "../services/CacheService";
