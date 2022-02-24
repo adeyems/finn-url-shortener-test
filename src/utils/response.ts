@@ -19,7 +19,7 @@ export const responseCode = {
 export const successResponse = (res: Response, statusCode: number = responseCode.SUCCESS, message: string = 'success', data: any = null) =>
 {
     data ? res
-        .header({'Content-type': 'application.json'})
+        .header({'Content-type': 'application/json'})
         .status(statusCode).json({status: 'success', message, data})
 
         : res

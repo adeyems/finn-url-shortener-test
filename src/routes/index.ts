@@ -1,14 +1,15 @@
 import express, {Request, Response} from "express";
-import {responseCode, successResponse} from "../utils/response";
 import URLControllers from "../controllers/URLControllers";
 import URLRepository from "../repositories/URLRepository";
-import {encodeToUtf8} from "../middlewares/encode-to-utf-8";
+import CacheService from "../services/CacheService";
+import {isUrlValid} from "../middlewares/is-url-valid";
+import HelperService from "../services/HelperService";
 
 const indexRoutes = express.Router();
 
-const urlController = new URLControllers(new URLRepository);
+const urlController = new URLControllers(new HelperService, new URLRepository(new CacheService));
 
-indexRoutes.post('/encode', (req: Request, res: Response) => successResponse(res));
-indexRoutes.get('/decode', (req: Request, res: Response) => successResponse(res));
+indexRoutes.post('/encode', isUrlValid, urlController.encode);
+indexRoutes.get('/decode', urlController.decode);
 
 export default indexRoutes;
