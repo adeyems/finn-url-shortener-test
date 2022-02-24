@@ -7,7 +7,7 @@ const supertest_1 = __importDefault(require("supertest"));
 const app_1 = __importDefault(require("../src/app"));
 const request = () => supertest_1.default(app_1.default);
 describe('the tests for testing api full functionalities', () => {
-    it('should return a 422 Unprocessable Entity Response Code if url object is missing', async (done) => {
+    it('should return a 422 Unprocessable Entity Response Code if url key is missing', async (done) => {
         request()
             .post('/api/v1/encode')
             .expect('Content-Type', /json/)
@@ -19,7 +19,7 @@ describe('the tests for testing api full functionalities', () => {
             done();
         });
     });
-    it('should return a 422 Unprocessable Entity Response Code', async (done) => {
+    it('should return a 422 Unprocessable Entity Response Code if URL is invalid', async (done) => {
         request()
             .post('/api/v1/encode')
             .send({ url: "http://localhost:8080" })
@@ -32,7 +32,7 @@ describe('the tests for testing api full functionalities', () => {
             done();
         });
     });
-    it('should return a 201 created response and an encoded shortened URL', async (done) => {
+    it('should return a 201 created response and an encoded shortened URL.', async (done) => {
         request()
             .post('/api/v1/encode')
             .send({ url: "https://google.com" })
@@ -46,7 +46,7 @@ describe('the tests for testing api full functionalities', () => {
             done();
         });
     });
-    it('should return a 201 created response and the same encoded shortened URL for the same url multiple times', async () => {
+    it('should return a 201 created response and the same encoded shortened URL for the same url multiple times.', async () => {
         let url = "https://google.com", encodedPath = '';
         let res = await request()
             .post('/api/v1/encode')
@@ -66,7 +66,7 @@ describe('the tests for testing api full functionalities', () => {
         expect(res.body.data).toHaveProperty("url", expect.stringMatching(/https?:\/\/(?:w{1,3}\.)?[^\s.]+(?:\.[a-z]+)*(?::\d+)?(?![^<]*(?:<\/\w+>|\/?>))/));
         expect(res.body.data.url.split('/')[3]).toMatch(encodedPath);
     });
-    it('should return a 201 created response and different encoded shortened URLs using different urls', async () => {
+    it('should return a 201 created response and different encoded shortened URLs using different urls.', async () => {
         let url = "https://google.com", url1 = "https://facebook.com", encodedPath = '';
         let res = await request()
             .post('/api/v1/encode')
