@@ -39,8 +39,10 @@ describe('the tests for testing api full functionalities', () => {
             .expect(201)
             .end((err, res) => {
                 if (err) return done(err)
-                expect(res.body).toMatchObject({status: "success", message: "Encoded URL", data})
+                expect(res.body).toMatchObject({status: "success", message: "Encoded URL"})
+                expect(res.body).toHaveProperty("data", expect.stringMatching(/http:\/\/localhost/))
                 done()
             })
     })
+
 });
