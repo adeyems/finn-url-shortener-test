@@ -9,6 +9,10 @@ class URLControllers {
 
     encode = async (req: Request, res: Response) => {
         try {
+            const urlShortCode = await this.urlRepository.getFromCache(req.body.url);
+            if (!!urlShortCode)
+                return successResponse(res, responseCode.CREATED, 'Encoded URL', {url: `${req.protocol}://${req.get('host')}/${urlShortCode}`})
+
             let encodedURL =  '', isKeyExist = true;
             while (isKeyExist){
                 encodedURL = this.helperService.generateRandomString(6);
@@ -17,6 +21,7 @@ class URLControllers {
             }
 
             await this.urlRepository.saveInCache(encodedURL, req.body.url)
+            await this.urlRepository.saveInCache(req.body.url, encodedURL)
 
             return successResponse(res, responseCode.CREATED, 'Encoded URL', {url: `${req.protocol}://${req.get('host')}/${encodedURL}`})
 
